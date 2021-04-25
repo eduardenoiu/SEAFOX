@@ -234,6 +234,7 @@ namespace SEAFOX
                     case "REAL":
                         matches = Regex.Matches(cellContent, pattern_REAL);
                         break;
+                    case "WORD":
                     case "UINT":
                     case "USINT":
                     case "ULONG":
@@ -412,6 +413,7 @@ namespace SEAFOX
         {
             int j = 0;
             float k = 0.0F;
+            ushort l = 0;
             bool fromIsNumeric = true, toIsNumeric = true;
 
             int numInputs = dataGridView1.Rows.Count;
@@ -431,6 +433,10 @@ namespace SEAFOX
                 case "REAL":
                     fromIsNumeric = float.TryParse(FromTextBox.Text.ToString(), out k);
                     toIsNumeric = float.TryParse(ToTextBox.Text.ToString(), out k);
+                    break;
+                case "WORD": 
+                    fromIsNumeric = UInt16.TryParse(FromTextBox.Text.ToString(), out l); // check if content is an integer
+                    toIsNumeric = UInt16.TryParse(ToTextBox.Text.ToString(), out l); // check if content is an integer
                     break;
                 default:
                     break;
@@ -465,6 +471,7 @@ namespace SEAFOX
             //dataGridView1.Rows.Add("1", "2", "3", "4");
             int j = 0;
             float k = 0.0F;
+            ushort l = 0;
             bool fromIsNumeric = true, toIsNumeric = true;
 
             switch (comboBox2.SelectedItem.ToString())
@@ -480,6 +487,10 @@ namespace SEAFOX
                 case "REAL":
                     fromIsNumeric = float.TryParse(FromTextBox.Text.ToString(), out k);
                     toIsNumeric = float.TryParse(ToTextBox.Text.ToString(), out k);
+                    break;
+                case "WORD":
+                    fromIsNumeric = UInt16.TryParse(FromTextBox.Text.ToString(), out l); // check if content is an integer
+                    toIsNumeric = UInt16.TryParse(ToTextBox.Text.ToString(), out l); // check if content is an integer
                     break;
                 default:
                     break;
