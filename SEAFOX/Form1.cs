@@ -15,7 +15,7 @@ namespace SEAFOX
 
     public partial class Form1 : Form
     {
-
+        EXPParser expParser = new EXPParser();
         XMLParser Parser = new XMLParser();
         private string cellOldValue, path, shortPath, filename, name;
         private List<string> xmlFiles = new List<string>();
@@ -1017,6 +1017,51 @@ namespace SEAFOX
                     }
                     comboBox2Items.Add(item.type);
                 }
+
+                dataGridView2.Columns.Clear();
+                dataGridView2.Rows.Clear();
+
+                // remove doublets
+                var uniqueItems = new HashSet<string>(comboBox2Items);
+                comboBox2Items.Clear();
+                foreach (string s in uniqueItems)
+                    comboBox2Items.Add(s);
+
+                // update datasource for comboBox2
+                comboBox2.DataSource = null;
+                comboBox2.DataSource = comboBox2Items;
+            }
+            else if (treeView1.SelectedNode.FullPath.Substring(treeView1.SelectedNode.FullPath.Length - 4) == ".exp" || treeView1.SelectedNode.FullPath.Substring(treeView1.SelectedNode.FullPath.Length - 4) == ".EXP")   //NEW if statement
+            {
+                string filePath = shortPath + treeView1.SelectedNode.FullPath;
+                List<EXPParser.varData> dataList = new List<EXPParser.varData>();
+                sFullFilePath = filePath; // save full path to selected file
+                TB_name.Text = treeView1.SelectedNode.Text.Substring(0, treeView1.SelectedNode.Text.Length - 4);//set name for csv file
+                StreamReader file = new StreamReader(sFullFilePath);
+                dataList = expParser.readEXPDoc(dataList, file);
+
+                comboBox2Items.Clear();
+                dataGridView1.Rows.Clear();
+                foreach (EXPParser.varData item in dataList)
+                {
+                    switch (comboBox1.SelectedIndex)
+                    {
+                        case 0: //base choice
+                            dataGridView1.Rows.Add(item.name, item.type, "0", "0");
+                            break;
+                        case 1: //random choice
+                            dataGridView1.Rows.Add(item.name, item.type, "0");
+                            break;
+                        case 2: //pairwise
+                            dataGridView1.Rows.Add(item.name, item.type, "0");
+                            break;
+                        default:
+                            dataGridView1.Rows.Add(item.name, item.type, "0");
+                            break;
+                    }
+                    comboBox2Items.Add(item.type);
+                }
+                file.Close();
                 dataGridView2.Columns.Clear();
                 dataGridView2.Rows.Clear();
 
@@ -1031,7 +1076,9 @@ namespace SEAFOX
                 comboBox2.DataSource = comboBox2Items;
             }
             else
+            {
                 MessageBox.Show("Can not open \"" + treeView1.SelectedNode.FullPath.Substring(treeView1.SelectedNode.FullPath.Length - 4) + "\" files");
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
