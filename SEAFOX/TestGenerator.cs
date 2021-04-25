@@ -116,6 +116,13 @@ namespace SEAFOX
         {
             switch (v.variable.datatype)
             {
+                case "UINT":
+                case "USINT":
+                    return getAllValues_UInt(v.variable.intervals);
+                case "LONG":
+                    return getAllValues_LInt(v.variable.intervals);
+                case "ULONG":
+                    return getAllValues_ULInt(v.variable.intervals);
                 case "INT":
                     return getAllValues_Int(v.variable.intervals);
                 case "BOOL":
@@ -326,6 +333,9 @@ namespace SEAFOX
                 //    return getRandom_double(interval);
                 case "REAL":
                     return getRandom_float(interval);
+                case "UINT":
+                case "USINT":
+                    return getRandom_uint(interval);
                 case "WORD":
                     return getRandom_word(interval);
                 default:
@@ -370,6 +380,60 @@ namespace SEAFOX
             int min = UInt16.Parse(interval.interval_a);
             int max = UInt16.Parse(interval.interval_b);
             int r = random.Next(min, (max + 1));
+            return r.ToString();
+        }
+        private string getRandom_uint(Interval interval)    //NEWER
+        {
+            uint a = UInt32.Parse(interval.interval_a);
+            uint a_base = a;    // base value (original value) for interval_a. Needed for keeping the lower limit of range for random value.
+            uint b = UInt32.Parse(interval.interval_b);
+
+            int a_loops = 0;
+            int b_loops = 0;
+            int min = 0;
+            int max = 0;
+            int rand_min = 0;
+            uint r = 0;
+
+            // divide the large uint to a value that can be handled by random.Next method.
+            // Keep track of loops for each interval value to set the random value within the range.
+            while (a > UInt16.MaxValue)
+            {
+                a = a - UInt16.MaxValue;
+                a_loops++;
+            }
+            while (b > UInt16.MaxValue)
+            {
+                b = b - UInt16.MaxValue;
+                b_loops++;
+            }
+            if (a > b)
+            {
+                int new_a = (int)a - UInt16.MaxValue;
+                min = new_a;
+                max = (int)b;
+                rand_min = 1;
+            }
+            else
+            {
+                min = (int)a;
+                max = (int)b;
+            }
+            int loop_diff = b_loops - a_loops;
+            int m_val = random.Next(rand_min, loop_diff + 1);
+
+            int rand = random.Next(min, (max + 1));
+
+            if (a_loops > 0)
+            {
+                //Need to add a base value and the UINT16.maxs' that was reduced from lower limit 
+                r = (uint)(rand + a_base + UInt16.MaxValue * a_loops + UInt16.MaxValue * m_val);
+            }
+            else
+            {
+                r = (uint)(rand + UInt16.MaxValue * m_val);
+            }
+
             return r.ToString();
         }
 
