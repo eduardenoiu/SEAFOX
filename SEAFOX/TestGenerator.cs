@@ -122,6 +122,8 @@ namespace SEAFOX
                     return getAllValues_Int(v.variable.intervals);
                 case "REAL":
                     return getAllValues_Float(v.variable.intervals);
+                case "WORD":
+                    return getAllValues_Word(v.variable.intervals);
                 default:
                     List<string> s = new List<string>();
                     s.Add("Error");
@@ -145,6 +147,8 @@ namespace SEAFOX
                     return getAllValues_Int(v.intervals);
                 case "REAL":
                     return getAllValues_Float(v.intervals);
+                case "WORD":
+                    return getAllValues_Word(v.intervals);
                 default:
                     List<string> s = new List<string>();
                     s.Add("Error");
@@ -252,6 +256,27 @@ namespace SEAFOX
             }
             return list;
         }
+        private List<string> getAllValues_Word(Interval[] intervals) // returns a list of all the values within the intervals
+        {
+            ulong a = 0, b = 0;
+            List<string> list = new List<string>();
+            for (int i = 0; i < intervals.Length; i++)
+            {
+                a = Convert.ToUInt16(intervals[i].interval_a);
+                b = Convert.ToUInt16(intervals[i].interval_b);
+
+                while (a <= b)
+                {
+                    list.Add(a.ToString());
+                    if (a == 65535)
+                    {
+                        break;
+                    }
+                    a = a + 1;
+                }
+            }
+            return list;
+        }
 
         private void printListStr(List<string> list)
         {
@@ -301,6 +326,8 @@ namespace SEAFOX
                 //    return getRandom_double(interval);
                 case "REAL":
                     return getRandom_float(interval);
+                case "WORD":
+                    return getRandom_word(interval);
                 default:
                     return "-";
             }
@@ -337,6 +364,13 @@ namespace SEAFOX
             float max = float.Parse(interval.interval_b);
             float r = min + ((float)(random.NextDouble())) * (max - min);
             return r.ToString("0.0");
+        }
+        private string getRandom_word(Interval interval)
+        {
+            int min = UInt16.Parse(interval.interval_a);
+            int max = UInt16.Parse(interval.interval_b);
+            int r = random.Next(min, (max + 1));
+            return r.ToString();
         }
 
         private ParameterSet[] sortPS (ParameterSet[]ps, ref List<int> p_order)
