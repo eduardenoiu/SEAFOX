@@ -116,6 +116,7 @@ namespace SEAFOX
         {
             switch (v.variable.datatype)
             {
+                case "TIME":
                 case "UINT":
                 case "USINT":
                     return getAllValues_UInt(v.variable.intervals);
@@ -141,6 +142,7 @@ namespace SEAFOX
         {
             switch (v.datatype)
             {
+                case "TIME":
                 case "UINT":
                 case "USINT":
                     return getAllValues_UInt(v.intervals);
@@ -333,6 +335,7 @@ namespace SEAFOX
                 //    return getRandom_double(interval);
                 case "REAL":
                     return getRandom_float(interval);
+                case "TIME":
                 case "UINT":
                 case "USINT":
                     return getRandom_uint(interval);

@@ -235,6 +235,7 @@ namespace SEAFOX
                         matches = Regex.Matches(cellContent, pattern_REAL);
                         break;
                     case "WORD":
+                    case "TIME":
                     case "UINT":
                     case "USINT":
                     case "ULONG":
@@ -414,6 +415,7 @@ namespace SEAFOX
             int j = 0;
             float k = 0.0F;
             ushort l = 0;
+            uint m = 0;
             bool fromIsNumeric = true, toIsNumeric = true;
 
             int numInputs = dataGridView1.Rows.Count;
@@ -435,8 +437,14 @@ namespace SEAFOX
                     toIsNumeric = float.TryParse(ToTextBox.Text.ToString(), out k);
                     break;
                 case "WORD": 
-                    fromIsNumeric = UInt16.TryParse(FromTextBox.Text.ToString(), out l); // check if content is an integer
-                    toIsNumeric = UInt16.TryParse(ToTextBox.Text.ToString(), out l); // check if content is an integer
+                    fromIsNumeric = UInt16.TryParse(FromTextBox.Text.ToString(), out l); // check if content is an ushort
+                    toIsNumeric = UInt16.TryParse(ToTextBox.Text.ToString(), out l); // check if content is an ushort
+                    break;
+                case "TIME":
+                case "UINT":
+                case "USINT":
+                    fromIsNumeric = uint.TryParse(FromTextBox.Text.ToString(), out m); // check if content is an uint
+                    toIsNumeric = uint.TryParse(ToTextBox.Text.ToString(), out m); // check if content is an uint
                     break;
                 default:
                     break;
@@ -472,6 +480,7 @@ namespace SEAFOX
             int j = 0;
             float k = 0.0F;
             ushort l = 0;
+            uint m = 0;
             bool fromIsNumeric = true, toIsNumeric = true;
 
             switch (comboBox2.SelectedItem.ToString())
@@ -489,8 +498,14 @@ namespace SEAFOX
                     toIsNumeric = float.TryParse(ToTextBox.Text.ToString(), out k);
                     break;
                 case "WORD":
-                    fromIsNumeric = UInt16.TryParse(FromTextBox.Text.ToString(), out l); // check if content is an integer
-                    toIsNumeric = UInt16.TryParse(ToTextBox.Text.ToString(), out l); // check if content is an integer
+                    fromIsNumeric = UInt16.TryParse(FromTextBox.Text.ToString(), out l); // check if content is an ushort
+                    toIsNumeric = UInt16.TryParse(ToTextBox.Text.ToString(), out l); // check if content is an ushort
+                    break;
+                case "TIME":
+                case "UINT":
+                case "USINT":
+                    fromIsNumeric = UInt32.TryParse(FromTextBox.Text.ToString(), out m); // check if content is an uint
+                    toIsNumeric = UInt32.TryParse(ToTextBox.Text.ToString(), out m); // check if content is an uint
                     break;
                 default:
                     break;
