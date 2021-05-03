@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using System.Reflection;
 using System.Timers;
+using System.Globalization;
 
 namespace SEAFOX
 {
@@ -617,7 +618,15 @@ namespace SEAFOX
                 List<string> temp = new List<string>();
                 for (int j = 0; j < dataGridView2.Columns.Count; j++)
                 {
-                    temp.Add(dataGridView2.Rows[i].Cells[j].Value.ToString());
+                    string item = dataGridView2.Rows[i].Cells[j].Value.ToString();
+                    if(item.Contains(","))
+                    {
+                        temp.Add(item.Replace(',', '.'));
+                    }
+                    else
+                    {
+                        temp.Add(item);
+                    }
                 }
                 TestCases.Add(temp);
             }
