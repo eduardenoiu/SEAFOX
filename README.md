@@ -1,7 +1,6 @@
 # SEAFOX
 
-SEAFOX - Software Evaluation Automation For XML
-Supports PLCOpen XML and *.EXP files to be imported
+SEAFOX - Combinatorial Test Generator for Industrial Control Software
 
 <img width="1280" height="853" alt="image" src="https://github.com/user-attachments/assets/5a95989b-678a-4389-aba9-c51106804c8a" />
 
