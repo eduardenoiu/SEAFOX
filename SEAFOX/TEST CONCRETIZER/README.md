@@ -1,5 +1,5 @@
 
-# DVA331-TEST CONCRETIZER
+TEST CONCRETIZER
 ## Description
 The main task of the script is to merge together two files with the relevant parts taken from both of them and create the new file.
 The implementation of the script is a process of the  new test case creation while reading the rows from a csv-file.
